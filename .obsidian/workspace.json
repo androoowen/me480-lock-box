@@ -1,0 +1,219 @@
+{
+  "main": {
+    "id": "6f3d04c3c7dc414a",
+    "type": "split",
+    "children": [
+      {
+        "id": "021948aaf05cf76e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b8467c4adb6ce496",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "10abc8f2b1d1d744",
+    "type": "split",
+    "children": [
+      {
+        "id": "007b14a156a576d2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "39b99958c59cc6bb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "c5b632649ff5f599",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "a1ce70e8d5370067",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bac40abd50bf58aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "9ba1d1da96ee515f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3004bf9ea0042a70",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "ad2d6840a9c3c15e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "01_Requirements/System Requirements.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from System Requirements"
+            }
+          },
+          {
+            "id": "889eb2b568bbcb81",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ccbcf0a315d92001",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d8cd1c0fac75c642",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-git:Open Git source control": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "39b99958c59cc6bb",
+  "lastOpenFiles": [
+    "me480 lockbox/01_Requirements/System Requirements.md",
+    "me480 lockbox/Dashboard - ME480.md",
+    "me480 lockbox/Excalidraw/Drawing 2026-04-05 23.36.35.excalidraw.md",
+    "me480 lockbox/99_Resources/99_Resources.md",
+    "me480 lockbox/05_Project/05_Project.md",
+    "me480 lockbox/04_Tests/04_Tests.md",
+    "me480 lockbox/03_Components/03_Components.md",
+    "me480 lockbox/02_Architecture/02_Architecture.md",
+    "me480 lockbox/01_Requirements/Subsystem Requirements.md",
+    "me480 lockbox/01_Requirements/Derived Requirements.md",
+    "me480 lockbox/01_Requirements/01_Requirements.md",
+    "me480 lockbox repo/me480 lockbox/01_Requirements/01_Requirements.md",
+    "me480 lockbox repo/me480 lockbox/Excalidraw/Drawing 2026-04-05 23.36.35.excalidraw.md",
+    "me480 lockbox repo/me480 lockbox/01_Requirements/System Requirements.md",
+    "me480 lockbox repo/me480 lockbox/01_Requirements/Subsystem Requirements.md",
+    "me480 lockbox repo/me480 lockbox/01_Requirements/Derived Requirements.md",
+    "me480 lockbox repo/me480 lockbox/Excalidraw",
+    "me480 lockbox repo/me480 lockbox/Dashboard - ME480.md",
+    "me480 lockbox repo/me480 lockbox/99_Resources",
+    "me480 lockbox repo/me480 lockbox/05_Project",
+    "me480 lockbox repo/me480 lockbox/04_Tests",
+    "me480 lockbox repo/me480 lockbox/03_Components",
+    "me480 lockbox repo/me480 lockbox/02_Architecture",
+    "me480 lockbox repo/me480 lockbox/01_Requirements",
+    "me480 lockbox repo/me480 lockbox",
+    "me480 lockbox repo/README.md",
+    "me480 lockbox repo",
+    "me480 lockbox",
+    "Screenshot 2026-04-03 at 2.33.37 PM.png",
+    "Screenshot 2026-04-03 at 2.33.37 PM 1.png",
+    "Welcome.md",
+    "System Requirements][Subsystem Requirements][Derived Requirements.md",
+    "01_Requirements/[[System Requirements][SubSystem Requirements]].md",
+    "Untitled.canvas"
+  ]
+}
