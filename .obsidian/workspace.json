@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "021948aaf05cf76e",
+        "id": "1b60a2f16eac407a",
         "type": "tabs",
         "children": [
           {
-            "id": "b8467c4adb6ce496",
+            "id": "51088055b8396a9c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "me480 lockbox/01_Requirements/01_Requirements.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "01_Requirements"
+              "title": "New tab"
             }
           }
         ]
@@ -155,13 +151,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "me480 lockbox/01_Requirements/01_Requirements.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01_Requirements"
+              "title": "Outline"
             }
           }
         ],
@@ -173,19 +168,20 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-excalidraw-plugin:New drawing": false,
-      "obsidian-git:Open Git source control": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b8467c4adb6ce496",
+  "active": "51088055b8396a9c",
   "lastOpenFiles": [
+    "me480 lockbox/01_Requirements/01_Requirements.md",
     "me480 lockbox/01_Requirements/System Requirements.md",
     "me480 lockbox/Dashboard - ME480.md",
     "me480 lockbox/Excalidraw/Drawing 2026-04-05 23.36.35.excalidraw.md",
@@ -196,7 +192,6 @@
     "me480 lockbox/02_Architecture/02_Architecture.md",
     "me480 lockbox/01_Requirements/Subsystem Requirements.md",
     "me480 lockbox/01_Requirements/Derived Requirements.md",
-    "me480 lockbox/01_Requirements/01_Requirements.md",
     "me480 lockbox repo/me480 lockbox/01_Requirements/01_Requirements.md",
     "me480 lockbox repo/me480 lockbox/Excalidraw/Drawing 2026-04-05 23.36.35.excalidraw.md",
     "me480 lockbox repo/me480 lockbox/01_Requirements/System Requirements.md",
