@@ -5,7 +5,7 @@
 | ----------------- | ---------------------------------------- | ------------------ | ---------------------------- |
 | Andrew            | Set up github                            | Y                  | Done in Lab section          |
 | Jayson            | Set up System Requirements/tabs for HW 2 | Y                  | Done in Lab section/Off-time |
-| Ken/Ella/Weronika | Complete Lab 3 ESP32                     | Y                  | Done in Lab section          |
+| Ken/Ella/Weronika | Complete Lab 3 ESP32                     |                    | Done in Lab section          |
 |                   |                                          |                    |                              |
 |                   |                                          |                    |                              |
 |                   |                                          |                    |                              |
