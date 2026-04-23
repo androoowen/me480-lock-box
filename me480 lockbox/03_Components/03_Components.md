@@ -1,8 +1,8 @@
-| Component   | Quantity   | Purpose                                    | Ordered? | Received? |
-| ----------- | ---------- | ------------------------------------------ | -------- | --------- |
-| Speaker     | ?          | So the lockbox can scream/ alarm           | no       | no        |
-| Keypad      | 1          | To disable lock                            | no       | no        |
-| Display     | 1          | To display icons, keypad input, text, time | no       | no        |
-| Pulley      | 2 sets (4) | To pull cover over device                  | no       | no        |
-| Pulley belt | 2          | To hold the covers and pull them           | no       | no        |
-|             |            |                                            |          |           |
+| Component     | Quantity   | Purpose                                    | Link                                                                                                                    | Ordered? | Received? |
+| ------------- | ---------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
+| Speaker       | ?          | So the lockbox can scream/ alarm           |                                                                                                                         | no       | no        |
+| Keypad        | 1          | To disable lock                            |                                                                                                                         | no       | no        |
+| Display       | 1          | To display icons, keypad input, text, time |                                                                                                                         | no       | no        |
+| Pulley        | 2 sets (4) | To pull cover over device                  |                                                                                                                         | no       | no        |
+| Pulley belt   | 2          | To hold the covers and pull them           |                                                                                                                         | no       | no        |
+| Stepper Motor | 2          | To drive the pulley system                 | https://www.omc-stepperonline.com/pancake-nema-11-bipolar-1-8deg-1ncm-1-4164oz-in-0-5a-28x28x9-5mm-4-wires-11hs04-0504s |          |           |
