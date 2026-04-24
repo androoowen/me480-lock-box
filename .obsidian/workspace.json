@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "me480 lockbox/03_Components/03_Components.md",
+                "file": "me480 lockbox/02_Architecture/Initial Design.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "03_Components"
+              "title": "Initial Design"
             }
           }
         ],
@@ -226,9 +226,9 @@
   },
   "active": "407a71c68c4f6350",
   "lastOpenFiles": [
+    "me480 lockbox/03_Components/03_Components.md",
     "me480 lockbox/01_Requirements/Derived Requirements.md",
     "me480 lockbox/01_Requirements/01_Requirements.md",
-    "me480 lockbox/03_Components/03_Components.md",
     "Pasted image 20260418143346.png",
     "Pasted image 20260416173135.png",
     "me480 lockbox/02_Architecture/Initial Design.md",
