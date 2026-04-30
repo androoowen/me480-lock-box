@@ -1,61 +1,62 @@
 
 
-MECHANICAL
+MECHANICAL SUBSYSTEM
 
-| ID     | Requirements  | Rationale | Verification | Date | Due |
-| ------ | ------------- | --------- | ------------ | ---- | --- |
-| MR-001 | The system... | Why       | Test         |      |     |
-| MR-002 |               |           |              |      |     |
-| MR-003 |               |           |              |      |     |
-| MR-004 |               |           |              |      |     |
-| MR-005 |               |           |              |      |     |
-| MR-006 |               |           |              |      |     |
-| MR-007 |               |           |              |      |     |
-| MR-008 |               |           |              |      |     |
-| MR-009 |               |           |              |      |     |
-| MR-010 |               |           |              |      |     |
+| ID     | Requirements                                                                                                                                  | Rationale                                                                         | Verification                                                                                    |     |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --- |
+| MR-001 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-002 | The system shall physically prevent the user from opening the box while in the locked state                                                   | Ensures a physical barrier exists to enforce the lockout condition                | Test: attempt to open the box during lockout and verify no mechanical access is possible        |     |
+| MR-003 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-004 | The system shall provide sufficient friction and stability to prevent sliding when axial force is applied on a smooth surface                 | Ensures the system remains stationary during use and prevents unintended movement | Test: apply a 5lb axial force using a force gauge and verify no sliding occurs                  |     |
+| MR-005 | the system shall provide proper positioning and support to align the device with the USB-C cord or magnetic charging interface within the box | Ensures reliable physical connection for consistent charging                      | Test: place phone in box and verify consistent alignment and connection with charging interface |     |
+| MR-006 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-007 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-008 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-009 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
+| MR-010 | X                                                                                                                                             |                                                                                   |                                                                                                 |     |
 
-ELECTRICAL
+ELECTRICAL SUBSYSTEM
 
-| ID     | Requirements  | Rationale | Verification | Date | Due |
-| ------ | ------------- | --------- | ------------ | ---- | --- |
-| ER-001 | The system... | Why       | Test         |      |     |
-| ER-002 |               |           |              |      |     |
-| ER-003 |               |           |              |      |     |
-| ER-004 |               |           |              |      |     |
-| ER-005 |               |           |              |      |     |
-| ER-006 |               |           |              |      |     |
-| ER-007 |               |           |              |      |     |
-| ER-008 |               |           |              |      |     |
-| ER-009 |               |           |              |      |     |
-| ER-010 |               |           |              |      |     |
+| ID     | Requirements                                                                                                                            | Rationale                                                                          | Verification                                                                                       |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| ER-001 | The system shall provide power and signal support for the keypad and display needed to enter and show the lockout timer value           | Ensures reliable operation of input/output hardware required for user interaction  | Test: verify keypad inputs are detected and displayed correctly under normal operating voltage     |
+| ER-002 | The system shall power the motors to slide the lock above the phone during the lockout period, and retract once timer/emergency is used | Allows for automatic process of locking and unlocking, removing the manual element | Test: verify the motors slide the lock forward while in lockout period, and retracts once complete |
+| ER-003 | The system shall provide power and signal to the integrated screen for displaying system information                                    | Ensures the display hardware functions reliably during operation                   | Test: verify the screen powers on and maintains stable operation during use                        |
+| ER-004 | X                                                                                                                                       |                                                                                    |                                                                                                    |
+| ER-005 | The system shall deliver appropriate power through a USB-C or magnetic charging interface to charge a phone while inside the box        | Enables the primary function of charging the device                                | Test: Connect power source and verify the phone begins charging when placed inside                 |
+| ER-006 | The system shall provide output signals to a buzzer/speaker/haptic actuator in response to keypad input                                 | Enables physical generation of audible or haptic feedback                          | Test: Press keys and verify electrical signals activate the buzzer or vibration motor              |
+| ER-007 | X                                                                                                                                       |                                                                                    |                                                                                                    |
+| ER-008 | X                                                                                                                                       |                                                                                    |                                                                                                    |
+| ER-009 | The system shall provide controllable power or signal output to the display backlight to support brightness adjustment from 10% to 100% | Enables physical control of screen brightness for readability/preference           | Test: adjust brightness settings and measure display output across the specified range             |
+| ER-010 | The system shall provide controllable audio to the speaker, including zero-output operation for mute                                    | Enables physical generation and adjustment of sound levels                         | Test: measure speaker output at multiple volume settings, including mute                           |
 
-SOFTWARE
+SOFTWARE SUBSYSTEM
 
-| ID     | Requirements  | Rationale | Verification | Date | Due |
-| ------ | ------------- | --------- | ------------ | ---- | --- |
-| SR-001 | The system... | Why       | Test         |      |     |
-| SR-002 |               |           |              |      |     |
-| SR-003 |               |           |              |      |     |
-| SR-004 |               |           |              |      |     |
-| SR-005 |               |           |              |      |     |
-| SR-006 |               |           |              |      |     |
-| SR-007 |               |           |              |      |     |
-| SR-008 |               |           |              |      |     |
-| SR-009 |               |           |              |      |     |
-| SR-010 |               |           |              |      |     |
+| ID     | Requirements                                                                                                                                   | Rationale                                                                                                            | Verification                                                                                                                                        |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SR-001 | The timer logic shall validate all user inputs against the 1m to 99 hr range before sequence initiation                                        | Prevents any "out of bound" errors that could crash the system                                                       | Test: attempt to enter "0" or any other value outside the bounds and verify the system rejects in the input                                         |
+| SR-002 | The system shall maintain a "locked" status while t > 0,  and will enter the "unlocked" state  once t = 0                                      | Enforces a locked and unlocked status which powers the motors                                                        | Test: set a timer and verify the software clearly states the correct status                                                                         |
+| SR-003 | The system shall constantly update the time, sending signals to update onto the display                                                        | Provides real-time feedback to the user                                                                              | Test: start a timer on the display and on an external device to make sure it syncs up                                                               |
+| SR-004 | X                                                                                                                                              |                                                                                                                      |                                                                                                                                                     |
+| SR-005 | X                                                                                                                                              |                                                                                                                      |                                                                                                                                                     |
+| SR-006 | The system shall detect each keypad press and trigger a feedback signal, as well as differentiate valid and invalid, and unintended keypresses | Ensures every user input is acknowledged by the system, and prevents false excessive feedback from incorrect signals | Test: press each key and verify feedback consistency,<br><br>Test: introduce rapid/partial presses and verify only valid inputs triggering feedback |
+| SR-007 | The system shall disable user modification of the timer value after the start sequence, unless emergency override is provided                  | Prevents unauthorized reduction and preserves integrity of lockout function                                          | Test: attempt to decrease timer value, verify change is rejected<br><br>Test: attempt to override with emergency function                           |
+| SR-008 | The system shall provide the user with different visual themes, applying, and retaining chosen theme until changed by the user                 | Supports user experience as well as accessibility and personalization                                                | Test: select each theme and verify the interface appearance changes accordingly                                                                     |
+| SR-009 | The system shall provide and apply the display brightness between 10% to 100%                                                                  | Supports user preference and readability, as well as setting a set limit range                                       | Test: change brightness and verify the screen output changes accordingly                                                                            |
+| SR-010 | The system shall provide the user with adjustable volume settings, and applying said volume                                                    | Ensures the selected audio preference affects actual output behavior                                                 | Test: select multiple volume levels and verify volume levels and mute are selectable and output changes accordingly                                 |
 
 INTEGRATION
 
-| ID     | Requirements  | Rationale | Verification | Date | Due |
-| ------ | ------------- | --------- | ------------ | ---- | --- |
-| IR-001 | The system... | Why       | Test         |      |     |
-| IR-002 |               |           |              |      |     |
-| IR-003 |               |           |              |      |     |
-| IR-004 |               |           |              |      |     |
-| IR-005 |               |           |              |      |     |
-| IR-006 |               |           |              |      |     |
-| IR-007 |               |           |              |      |     |
-| IR-008 |               |           |              |      |     |
-| IR-009 |               |           |              |      |     |
-| IR-010 |               |           |              |      |     |
+| ID     | Requirements                                                                                                                                                            | Rationale                                                                                        | Verification                                                                                                    |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| IR-001 | This system shall ensure input from the keypad is correctly processed by the controller and reflected on the display and timer function                                 | Guarantees all subsystems work together to process time input and displays it                    | Test: input a time via keypad and verify it is displayed correctly                                              |
+| IR-002 | The system shall ensure coordination between the timer, locking mechanism, and user input, so the system remains locked until timer expires or override code is entered | Guarantees all subsystems work together to enforce security and controlled access                | Test: during countdown, attempt to open the box and input override codes to verify correct system behavior      |
+| IR-003 | The system shall ensure that the timer data and lock status from the controller are correctly communicated to and displayed on the screen                               | Guaranteed accurate and synchronized feedback across subsystems                                  | Test: compare internal timer/state values inside terminal with displayed values to confirm consistency          |
+| IR-004 | The system shall ensure the combined footings and structure prevent movement under the specified force                                                                  | Ensures all physical components work together to maintain stability                              | Test: Perform system level push test and verify no movement and footings don't come off.                        |
+| IR-005 | The system shall ensure that the charging interface functions correctly while the phone is locked inside the box                                                        | Ensures charging capability is maintained during normal system operations                        | Test: lock the box with the phone inside and verify continuous charging through the lock period                 |
+| IR-006 | the system shall ensure that the keypad input, controller processing, and feedback devices operate toegether to provide immediate user feedback                         | ensures a seamless and responsive user experience                                                | Test: Press keys and verify near-instant feedback occurs                                                        |
+| IR-007 | The system shall ensure once the start sequence is initiated, user inputs, timer logic, and display behavior consistently prevent timer reduction                       | Ensures all subsystems work together to enforce active lockout condition                         | Test: start system, attempt changes and verify no reduction occurs                                              |
+| IR-008 | The system shall ensure that theme selections made in the user interface are correctly applied and displayed                                                            | Ensures proper coordination between user input and display output                                | Test: change themes and verify correct visual updates occur on the display                                      |
+| IR-009 | The system shall ensure that brightness settings selected in the user interface are correctly communicated and implemented by the display hardware                      | Ensures correct coordination between UI controls, controller logic, and display output           | Test: change brightness through the interface and confirm the displayed brightness matches the selected setting |
+| IR-010 | The system shall ensure that the user selected audio settings are correctly communicated and implemented by the speaker output system                                   | Ensures coordinated operation between interface controls, controller logic, and speaker hardware | Test: change volume settings and verify the resulting speaker output matches the selected setting               |
+
