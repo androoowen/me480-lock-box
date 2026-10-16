@@ -4,19 +4,9 @@
 #include <math.h>
 #include "driver/i2s.h"
 
-
-
-
 // ================= OLED =================
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
-
-
-
-
-
-
-
 
 #define OLED_CLK   17
 #define OLED_MOSI  16
@@ -24,38 +14,22 @@
 #define OLED_DC    2
 #define OLED_CS    15
 
-
-
-
-
-
-
-
 Adafruit_SSD1306 display(
- SCREEN_WIDTH,
- SCREEN_HEIGHT,
- OLED_MOSI,
- OLED_CLK,
- OLED_DC,
- OLED_RESET,
- OLED_CS
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT,
+  OLED_MOSI,
+  OLED_CLK,
+  OLED_DC,
+  OLED_RESET,
+  OLED_CS
 );
-
-
-
 
 // ================= STEPPER =================
 #define STEP_PIN 12
 #define DIR_PIN 13
 
-
-
-
 const int STEPS_TO_OPEN = 680;
 const int STEPS_TO_CLOSE = 680;
-
-
-
 
 // ================= SPEAKER =================
 #define AMP_SD   25
@@ -63,642 +37,459 @@ const int STEPS_TO_CLOSE = 680;
 #define I2S_BCLK 27
 #define I2S_LRC  14
 
-
-
-
-
-
-
-
 #define SAMPLE_RATE 44100
 
-
-
-
 // ================= KEYPAD =================
-
-
-
-
-#define KEY_1       23
-#define KEY_2       36
-#define KEY_3       22
-#define KEY_4       39
-#define KEY_5       34
-#define KEY_6       35
-#define KEY_7       21
-#define KEY_8       3
-#define KEY_9       1
-#define KEY_0       18
+#define KEY_1    23
+#define KEY_2    36
+#define KEY_3    22
+#define KEY_4    39
+#define KEY_5    34
+#define KEY_6    35
+#define KEY_7    21
+#define KEY_8    3
+#define KEY_9    1
+#define KEY_0    18
 #define KEY_MODE 5
-#define KEY_POWER  19
-
-
-
-
-
-
-
+#define KEY_POWER 19
 
 String pinCode = "1234";
 String inputBuffer = "";
 
-
-
-
 int volumeLevel = 5;
 int pendingMinutes = 0;
 
-
-
-
 unsigned long unlockTime = 0;
 
-
-
-
 enum State {
- OFF_STATE,
- PIN_STATE,
- TIMER_STATE,
- CONFIRM_TIMER_STATE,
- VOLUME_STATE,
- LOCKED_STATE
+  OFF_STATE,
+  PIN_STATE,
+  TIMER_STATE,
+  CONFIRM_TIMER_STATE,
+  VOLUME_STATE,
+  LOCKED_STATE
 };
-
-
-
 
 State currentState = OFF_STATE;
 
-
-
-
 void showText(String line1, String line2 = "")
 {
- display.clearDisplay();
- display.setTextSize(1);
- display.setTextColor(SSD1306_WHITE);
- display.setCursor(0,0);
- display.println(line1);
- display.setCursor(0,20);
- display.println(line2);
- display.display();
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println(line1);
+  display.setCursor(0, 20);
+  display.println(line2);
+  display.display();
 }
-
-
-
 
 void beepSuccess()
 {
- playTone(1000,100);
- delay(50);
- playTone(1500,100);
+  playTone(1000, 100);
+  delay(50);
+  playTone(1500, 100);
 }
-
-
-
 
 void beepError()
 {
- playTone(300,300);
+  playTone(300, 300);
 }
-
-
-
 
 void alarmSound()
 {
- for(int i=0;i<3;i++)
- {
-   playTone(1200,200);
-   delay(75);
+  for (int i = 0; i < 3; i++)
+  {
+    playTone(1200, 200);
+    delay(75);
 
-
-
-
-   playTone(800,200);
-   delay(75);
- }
+    playTone(800, 200);
+    delay(75);
+  }
 }
-
 
 void wrongPinSound()
 {
- playTone(300, 350);
- delay(80);
- playTone(250, 350);
+  playTone(300, 350);
+  delay(80);
+  playTone(250, 350);
 }
-
 
 void timerDoneSound()
 {
- int sixteenth = 136;
- int eighth = 273;
- int quarter = 545;
- int gap = 70;
+  int sixteenth = 136;
+  int eighth = 273;
+  int quarter = 545;
+  int gap = 70;
 
+  // G G G G
+  playTone(1568, sixteenth); delay(gap);
+  playTone(1568, sixteenth); delay(gap);
+  playTone(1568, sixteenth); delay(gap);
+  playTone(1568, sixteenth); delay(gap);
 
-   // G G G G
- playTone(1568, sixteenth); delay(gap);
- playTone(1568, sixteenth); delay(gap);
- playTone(1568, sixteenth); delay(gap);
- playTone(1568, sixteenth); delay(gap);
+  // F F
+  playTone(1396, eighth); delay(gap);
+  playTone(1396, eighth); delay(gap);
 
+  // D D
+  playTone(1174, eighth); delay(gap);
+  playTone(1174, eighth); delay(gap);
 
- // F F
- playTone(1396, eighth); delay(gap);
- playTone(1396, eighth); delay(gap);
-
-
- // D D
- playTone(1174, eighth); delay(gap);
- playTone(1174, eighth); delay(gap);
-
-
- // F
- playTone(1396, quarter);
+  // F
+  playTone(1396, quarter);
 }
 
-
-
-
-void moveStepper(bool dir,int steps)
+void moveStepper(bool dir, int steps)
 {
- digitalWrite(DIR_PIN,dir);
+  digitalWrite(DIR_PIN, dir);
 
-
-
-
- for(int i=0;i<steps;i++)
- {
-   digitalWrite(STEP_PIN,HIGH);
-   delayMicroseconds(3200);
-   digitalWrite(STEP_PIN,LOW);
-   delayMicroseconds(3200);
- }
+  for (int i = 0; i < steps; i++)
+  {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(3200);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(3200);
+  }
 }
-
-
-
 
 void openLid()
 {
- moveStepper(LOW,STEPS_TO_OPEN);
+  moveStepper(LOW, STEPS_TO_OPEN);
 }
-
-
-
 
 void closeLid()
 {
- moveStepper(HIGH,STEPS_TO_CLOSE);
+  moveStepper(HIGH, STEPS_TO_CLOSE);
 }
-
-
-
 
 char getKey()
 {
- if(!digitalRead(KEY_1)) return '1';
- if(!digitalRead(KEY_2)) return '2';
- if(!digitalRead(KEY_3)) return '3';
- if(!digitalRead(KEY_4)) return '4';
- if(!digitalRead(KEY_5)) return '5';
- if(!digitalRead(KEY_6)) return '6';
- if(!digitalRead(KEY_7)) return '7';
- if(!digitalRead(KEY_8)) return '8';
- if(!digitalRead(KEY_9)) return '9';
- if(!digitalRead(KEY_0)) return '0';
+  if (!digitalRead(KEY_1)) return '1';
+  if (!digitalRead(KEY_2)) return '2';
+  if (!digitalRead(KEY_3)) return '3';
+  if (!digitalRead(KEY_4)) return '4';
+  if (!digitalRead(KEY_5)) return '5';
+  if (!digitalRead(KEY_6)) return '6';
+  if (!digitalRead(KEY_7)) return '7';
+  if (!digitalRead(KEY_8)) return '8';
+  if (!digitalRead(KEY_9)) return '9';
+  if (!digitalRead(KEY_0)) return '0';
 
+  if (!digitalRead(KEY_MODE)) return 'M';
+  if (!digitalRead(KEY_POWER)) return 'P';
 
-
-
- if(!digitalRead(KEY_MODE)) return 'M';
- if(!digitalRead(KEY_POWER)) return 'P';
-
-
-
-
- return '\0';
+  return '\0';
 }
-
-
-
 
 void setupI2S()
 {
- i2s_config_t i2s_config = {
-   .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
-   .sample_rate = SAMPLE_RATE,
-   .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
-   .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
-   .communication_format = I2S_COMM_FORMAT_I2S,
-   .intr_alloc_flags = 0,
-   .dma_buf_count = 8,
-   .dma_buf_len = 256,
-   .use_apll = false,
-   .tx_desc_auto_clear = true
- };
+  i2s_config_t i2s_config = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
+    .sample_rate = SAMPLE_RATE,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+    .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
+    .communication_format = I2S_COMM_FORMAT_I2S,
+    .intr_alloc_flags = 0,
+    .dma_buf_count = 8,
+    .dma_buf_len = 256,
+    .use_apll = false,
+    .tx_desc_auto_clear = true
+  };
 
+  i2s_pin_config_t pin_config = {
+    .bck_io_num = I2S_BCLK,
+    .ws_io_num = I2S_LRC,
+    .data_out_num = I2S_DIN,
+    .data_in_num = I2S_PIN_NO_CHANGE
+  };
 
-
-
- i2s_pin_config_t pin_config = {
-   .bck_io_num = I2S_BCLK,
-   .ws_io_num = I2S_LRC,
-   .data_out_num = I2S_DIN,
-   .data_in_num = I2S_PIN_NO_CHANGE
- };
-
-
-
-
- i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
- i2s_set_pin(I2S_NUM_0, &pin_config);
+  i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
+  i2s_set_pin(I2S_NUM_0, &pin_config);
 }
-
-
-
 
 void playTone(float freq, int duration)
 {
- int samples = SAMPLE_RATE * duration / 1000;
- int16_t buffer[256];
+  int samples = SAMPLE_RATE * duration / 1000;
+  int16_t buffer[256];
 
+  float phase = 0.0;
+  float phaseIncrement = 2.0 * PI * freq / SAMPLE_RATE;
 
- float phase = 0.0;
- float phaseIncrement = 2.0 * PI * freq / SAMPLE_RATE;
+  size_t bytesWritten;
 
+  int amplitude = map(volumeLevel, 0, 9, 0, 5000);
 
- size_t bytesWritten;
+  for (int i = 0; i < samples; i += 256)
+  {
+    for (int j = 0; j < 256; j++)
+    {
+      float sample = sin(phase);
 
+      buffer[j] = (int16_t)(sample * amplitude);
 
- int amplitude = map(volumeLevel, 0, 9, 0, 5000);
+      phase += phaseIncrement;
 
+      if (phase > 2.0 * PI)
+        phase -= 2.0 * PI;
+    }
 
- for(int i = 0; i < samples; i += 256)
- {
-   for(int j = 0; j < 256; j++)
-   {
-     float sample = sin(phase);
-
-
-     buffer[j] = (int16_t)(sample * amplitude);
-
-
-     phase += phaseIncrement;
-
-
-     if(phase > 2.0 * PI)
-       phase -= 2.0 * PI;
-   }
-
-
-   i2s_write(
-     I2S_NUM_0,
-     buffer,
-     sizeof(buffer),
-     &bytesWritten,
-     portMAX_DELAY
-   );
- }
+    i2s_write(
+      I2S_NUM_0,
+      buffer,
+      sizeof(buffer),
+      &bytesWritten,
+      portMAX_DELAY
+    );
+  }
 }
-
-
-
-
-
-
-
 
 void setup()
 {
- pinMode(STEP_PIN,OUTPUT);
- pinMode(DIR_PIN,OUTPUT);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
 
+  pinMode(KEY_1, INPUT_PULLUP);
+  pinMode(KEY_3, INPUT_PULLUP);
+  pinMode(KEY_7, INPUT_PULLUP);
+  pinMode(KEY_8, INPUT_PULLUP);
+  pinMode(KEY_9, INPUT_PULLUP);
+  pinMode(KEY_0, INPUT_PULLUP);
+  pinMode(KEY_MODE, INPUT_PULLUP);
+  pinMode(KEY_POWER, INPUT_PULLUP);
 
+  pinMode(KEY_2, INPUT);
+  pinMode(KEY_4, INPUT);
+  pinMode(KEY_5, INPUT);
+  pinMode(KEY_6, INPUT);
 
+  display.begin(SSD1306_SWITCHCAPVCC);
 
- pinMode(KEY_1,INPUT_PULLUP);
- pinMode(KEY_3,INPUT_PULLUP);
- pinMode(KEY_7,INPUT_PULLUP);
- pinMode(KEY_8,INPUT_PULLUP);
- pinMode(KEY_9,INPUT_PULLUP);
- pinMode(KEY_0,INPUT_PULLUP);
- pinMode(KEY_MODE,INPUT_PULLUP);
- pinMode(KEY_POWER,INPUT_PULLUP);
+  // Turn amplifier on
+  pinMode(AMP_SD, OUTPUT);
+  digitalWrite(AMP_SD, HIGH);
 
+  delay(100);
 
+  setupI2S();
 
+  showText("ACTIVATING");
+  delay(500);
 
- pinMode(KEY_2,INPUT);
- pinMode(KEY_4,INPUT);
- pinMode(KEY_5,INPUT);
- pinMode(KEY_6,INPUT);
+  // Test sound immediately on boot
+  alarmSound();
 
-
-
-
- display.begin(SSD1306_SWITCHCAPVCC);
-
-
-// Turn amplifier on
-pinMode(AMP_SD, OUTPUT);
-digitalWrite(AMP_SD, HIGH);
-
-
-delay(100);
-
-
-setupI2S();
-
-
-showText("ACTIVATING");
-delay(500);
-
-
-// Test sound immediately on boot
-alarmSound();
-
-
-showText("Phone Lockbox","Press POWER");
+  showText("Phone Lockbox", "Press POWER");
 }
-
-
-
 
 void loop()
 {
- char key = getKey();
+  char key = getKey();
 
+  if (currentState == OFF_STATE)
+  {
+    if (key == 'P')
+    {
+      inputBuffer = "";
+      currentState = PIN_STATE;
+      showText("Enter PIN", "POWER = Submit");
+      delay(250);
+    }
+  }
+  else if (currentState == PIN_STATE)
+  {
+    if (key >= '0' && key <= '9')
+    {
+      if (inputBuffer.length() < 4)
+      {
+        inputBuffer += key;
+        showText("PIN", inputBuffer);
+      }
+      delay(200);
+    }
 
+    if (key == 'P')
+    {
+      if (inputBuffer == pinCode)
+      {
+        beepSuccess();
+        currentState = TIMER_STATE;
+        inputBuffer = "";
+        showText("Timer Menu", "Enter Minutes");
+      }
+      else
+      {
+        wrongPinSound();
+        inputBuffer = "";
+        showText("Wrong PIN", "Try Again");
+      }
+      delay(300);
+    }
+  }
+  else if (currentState == TIMER_STATE)
+  {
+    if (key >= '0' && key <= '9')
+    {
+      inputBuffer += key;
+      showText("Minutes", inputBuffer);
+      delay(200);
+    }
 
+    if (key == 'P')
+    {
+      if (inputBuffer.length() > 0)
+      {
+        pendingMinutes = inputBuffer.toInt();
 
- if(currentState == OFF_STATE)
- {
-   if(key == 'P')
-   {
-     inputBuffer = "";
-     currentState = PIN_STATE;
-     showText("Enter PIN","POWER = Submit");
-     delay(250);
-   }
- }
+        currentState = CONFIRM_TIMER_STATE;
 
+        showText(
+          "Confirm " + String(pendingMinutes) + " min?",
+          "MODE = No POWER = Yes"
+        );
 
+        delay(300);
+      }
+    }
 
+    if (key == 'M')
+    {
+      currentState = VOLUME_STATE;
+      showText("Volume", String(volumeLevel));
+      delay(250);
+    }
+  }
+  else if (currentState == CONFIRM_TIMER_STATE)
+  {
+    // MODE = No
+    if (key == 'M')
+    {
+      pendingMinutes = 0;
+      inputBuffer = "";
 
- else if(currentState == PIN_STATE)
- {
-   if(key >= '0' && key <= '9')
-   {
-     if(inputBuffer.length() < 4)
-     {
-       inputBuffer += key;
-       showText("PIN", inputBuffer);
-     }
-     delay(200);
-   }
+      currentState = TIMER_STATE;
 
+      showText("Timer Menu", "Enter Minutes");
+      delay(300);
+    }
 
-
-
-   if(key == 'P')
-   {
-     if(inputBuffer == pinCode)
-     {
-       beepSuccess();
-       currentState = TIMER_STATE;
-       inputBuffer = "";
-       showText("Timer Menu","Enter Minutes");
-     }
-     else
-     {
-       wrongPinSound();
-       inputBuffer = "";
-       showText("Wrong PIN","Try Again");
-     }
-     delay(300);
-   }
- }
-
-
-
-
- else if(currentState == TIMER_STATE)
- {
-   if(key >= '0' && key <= '9')
-   {
-     inputBuffer += key;
-     showText("Minutes", inputBuffer);
-     delay(200);
-   }
-
-
-
-
-   if(key == 'P')
-   {
-     if(inputBuffer.length() > 0)
-     {
-       pendingMinutes = inputBuffer.toInt();
-
-
-       currentState = CONFIRM_TIMER_STATE;
-
-
-       showText(
-         "Confirm " + String(pendingMinutes) + " min?",
-         "MODE = No POWER = Yes"
-       );
-
-
-       delay(300);
-     }
-   }
-
-
-
-
-   if(key == 'M')
-   {
-     currentState = VOLUME_STATE;
-     showText("Volume", String(volumeLevel));
-     delay(250);
-   }
- }
-
-
- else if(currentState == CONFIRM_TIMER_STATE)
- {
-   // MODE = No
-   if(key == 'M')
-   {
-     pendingMinutes = 0;
-     inputBuffer = "";
-
-
-     currentState = TIMER_STATE;
-
-
-     showText("Timer Menu", "Enter Minutes");
-     delay(300);
-   }
-
-
-   // POWER = Yes
-   if(key == 'P')
-   {
-     showText("LOCKING", "Please Wait");
+    // POWER = Yes
+    if (key == 'P')
+    {
+      showText("LOCKING", "Please Wait");
       closeLid();
 
+      unlockTime =
+        millis() +
+        ((unsigned long)pendingMinutes * 60000UL);
 
-     unlockTime =
-       millis() +
-       ((unsigned long)pendingMinutes * 60000UL);
+      inputBuffer = "";
 
+      currentState = LOCKED_STATE;
 
-     inputBuffer = "";
+      showText(
+        "LOCKED",
+        String(pendingMinutes) + " min"
+      );
 
+      delay(300);
+    }
+  }
+  else if (currentState == VOLUME_STATE)
+  {
+    if (key >= '0' && key <= '9')
+    {
+      volumeLevel = key - '0';
+      showText("Volume", String(volumeLevel));
 
-     currentState = LOCKED_STATE;
+      // preview sound at selected volume
+      playTone(1000, 120);
+      delay(60);
+      playTone(1500, 120);
 
+      delay(200);
+    }
 
-     showText(
-       "LOCKED",
-       String(pendingMinutes) + " min"
-     );
+    if (key == 'M')
+    {
+      currentState = TIMER_STATE;
+      showText("Timer Menu", "Enter Minutes");
+      delay(250);
+    }
+  }
+  else if (currentState == LOCKED_STATE)
+  {
+    static String pinBuffer = "";
+    static unsigned long lastDisplayUpdate = 0;
 
+    if (key >= '0' && key <= '9')
+    {
+      if (pinBuffer.length() < 4)
+      {
+        pinBuffer += key;
+      }
 
-     delay(300);
-   }
- }
+      showText("Override PIN", pinBuffer);
+      delay(200);
+    }
 
+    if (key == 'P')
+    {
+      if (pinBuffer == pinCode)
+      {
+        beepSuccess();
 
- else if(currentState == VOLUME_STATE)
- {
-   if(key >= '0' && key <= '9')
-   {
-     volumeLevel = key - '0';
-     showText("Volume", String(volumeLevel));
+        pinBuffer = "";
+        inputBuffer = "";
 
+        unlockTime = 0;   // kill old timer
 
-     // preview sound at selected volume
-     playTone(1000, 120);
-     delay(60);
-     playTone(1500, 120);
+        currentState = TIMER_STATE;
 
+        showText("Override", "Unlocked");
+        delay(1000);
 
-     delay(200);
-   }
+        showText("Timer Menu", "Enter Minutes");
+      }
+      else
+      {
+        beepError();
+        pinBuffer = "";
+        showText("Wrong PIN", "Try Again");
+        delay(1000);
+      }
+    }
 
+    if (millis() >= unlockTime)
+    {
+      timerDoneSound();
+      showText("UNLOCKING", "Please Wait");
 
+      openLid();
 
+      currentState = TIMER_STATE;
 
-   if(key == 'M')
-   {
-     currentState = TIMER_STATE;
-     showText("Timer Menu","Enter Minutes");
-     delay(250);
-   }
- }
+      pinBuffer = "";
+      inputBuffer = "";
 
+      unlockTime = 0;
 
+      showText("Time Up", "Unlocked");
+      delay(1000);
 
+      showText("Timer Menu", "Enter Minutes");
+    }
+    else
+    {
+      if (millis() - lastDisplayUpdate >= 1000 && pinBuffer.length() == 0)
+      {
+        lastDisplayUpdate = millis();
 
- else if(currentState == LOCKED_STATE)
- {
-   static String pinBuffer = "";
-   static unsigned long lastDisplayUpdate = 0;
+        unsigned long remaining =
+          (unlockTime - millis()) / 1000UL;
 
-
-   if(key >= '0' && key <= '9')
-   {
-     if(pinBuffer.length() < 4)
-     {
-       pinBuffer += key;
-     }
-
-
-     showText("Override PIN", pinBuffer);
-     delay(200);
-   }
-
-
-   if(key == 'P')
-   {
-     if(pinBuffer == pinCode)
-     {
-
-
-       beepSuccess();
-
-
-       pinBuffer = "";
-       inputBuffer = "";
-
-
-       unlockTime = 0;   // kill old timer
-
-
-       currentState = TIMER_STATE;
-
-
-       showText("Override", "Unlocked");
-       delay(1000);
-
-
-       showText("Timer Menu", "Enter Minutes");
-   }
-     else
-     {
-       beepError();
-       pinBuffer = "";
-       showText("Wrong PIN", "Try Again");
-       delay(1000);
-     }
-   }
-
-
-   if(millis() >= unlockTime)
-   {
-     timerDoneSound();
-     showText("UNLOCKING", "Please Wait");
-  
-     openLid();
-
-
-     currentState = TIMER_STATE;
-
-
-     pinBuffer = "";
-     inputBuffer = "";
-
-
-     unlockTime = 0;
-
-
-     showText("Time Up", "Unlocked");
-     delay(1000);
-
-
-     showText("Timer Menu", "Enter Minutes");
-   }
-   else
-   {
-     if(millis() - lastDisplayUpdate >= 1000 && pinBuffer.length() == 0)
-     {
-       lastDisplayUpdate = millis();
-
-
-       unsigned long remaining =
-         (unlockTime - millis()) / 1000UL;
-
-
-       showText("LOCKED", String(remaining) + " sec");
-     }
-   }
- }
+        showText("LOCKED", String(remaining) + " sec");
+      }
+    }
+  }
 }
-
